@@ -3,6 +3,7 @@
 ## Cloud 9 Setup ##
 
 git clone https://github.com/tommy1008/FYP.git
+
 cd FYP/  
 chmod +x *.sh  
 ./setup.sh  
