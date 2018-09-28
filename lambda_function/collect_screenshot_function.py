@@ -20,7 +20,7 @@ def lambda_handler(event,context):
     ]
 
     post = s3.generate_presigned_post(
-        Bucket=os.environ['StudentLabDataBucket'],
+        Bucket=os.environ['StudentLabDataBuckets'],
         Key = f"screenshot_stream/{partition}/id={apiKey['name']}/{filename}",
         Fields=fields,
         Conditions=conditions

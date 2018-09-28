@@ -20,7 +20,7 @@ def respond(err, res=None):
 
 def lambda_handler(event, context):
     print(event)
-    bucket = os.environ['StudentMarkingBucket']
+    bucket = os.environ['StudentMarkingBuckets']
     
     studentId = event['pathParameters']['studentId']
     lab =  event['pathParameters']['lab']

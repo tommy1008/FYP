@@ -28,8 +28,8 @@ Globals:
     MemorySize: 512
     Environment:
         Variables: 
-          StudentLabDataBucket: !Ref StudentLabDataBucket
-          StudentMarkingBucket: !Ref StudentMarkingBucket
+          StudentLabDataBuckets: !Ref StudentLabDataBuckets
+          StudentMarkingBuckets: !Ref StudentMarkingBuckets
           SourceRespositoryName: !Ref SourceRespositoryName
           GitCommand: !Ref GitCommand
           RunUnitTest: !Ref RunUnitTest
@@ -123,8 +123,8 @@ Resources:
                     Action:
                       - s3:PutObject
                     Resource:
-                        - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBucket}/*'
-                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBuckets}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
             Events:
                 LambdaMicroservice:
                   Type: Api
@@ -150,13 +150,13 @@ Resources:
                     Action:
                       - s3:PutObject
                     Resource:
-                        - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBucket}/*'
-                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBuckets}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
                   - Effect: Allow
                     Action:
                       - s3:PutObjectAcl
                     Resource:
-                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
             Events:
                 LambdaMicroservice:
                   Type: Api
@@ -183,13 +183,13 @@ Resources:
                     Action:
                       - s3:PutObject
                     Resource:
-                        - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBucket}/*'
-                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBuckets}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
                   - Effect: Allow
                     Action:
                       - s3:PutObjectAcl
                     Resource:
-                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
             Events:
                 LambdaMicroservice:
                   Type: Api
@@ -215,13 +215,13 @@ Resources:
             Action:
             - s3:PutObject
             Resource:
-            - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBucket}/*'
-            - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+            - Fn::Sub: 'arn:aws:s3:::${StudentLabDataBuckets}/*'
+            - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
           - Effect: Allow
             Action:
             - s3:PutObjectAcl
             Resource:
-            - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+            - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
         Events:
           LambdaMicroservice:
             Type: Api
@@ -248,12 +248,12 @@ Resources:
                     Action:
                       - s3:GetObject
                     Resource:
-                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
                   - Effect: Allow
                     Action:
                       - s3:ListObjects
                     Resource:
-                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBucket}/*'
+                        - Fn::Sub: 'arn:aws:s3:::${StudentMarkingBuckets}/*'
             Events:
                 LambdaMicroservice:
                   Type: Api
@@ -262,13 +262,13 @@ Resources:
                     Path: /progress/{studentId}/{lab}
                     Method: GET
 
-    StudentLabDataBucket:
+    StudentLabDataBuckets:
         Type: AWS::S3::Bucket
         Properties:
           VersioningConfiguration:
             Status: Enabled
 
-    StudentMarkingBucket:
+    StudentMarkingBuckets:
         Type: AWS::S3::Bucket
         Properties:
           AccessControl: PublicRead
@@ -434,7 +434,7 @@ Resources:
                 Type: string
             InputFormat: org.apache.hadoop.mapred.TextInputFormat
             Location:
-              Fn::Sub: 's3://${StudentLabDataBucket}/event_stream'
+              Fn::Sub: 's3://${StudentLabDataBuckets}/event_stream'
             SerdeInfo:
               Parameters:
                 paths: 'button,dx,dy,ip,key,name,pressed,student,time,x,y'
@@ -469,16 +469,16 @@ Outputs:
     StudentPlan:
        Value: !Ref StudentPlan 
        
-    StudentLabDataBucket:
-      Value: !Ref StudentLabDataBucket 
+    StudentLabDataBuckets:
+      Value: !Ref StudentLabDataBuckets
       
     ApiKey:
       Value: !Ref ApiKey
 
     WebsiteURL:
-      Value: !GetAtt [StudentMarkingBucket, WebsiteURL]
+      Value: !GetAtt [StudentMarkingBuckets, WebsiteURL]
       Description: URL for website hosted on S3
     
     S3BucketSecureURL:
-      Value: !Join ['', ['https://', !GetAtt [StudentMarkingBucket, DomainName]]]
+      Value: !Join ['', ['https://', !GetAtt [StudentMarkingBuckets, DomainName]]]
       Description: Name of S3 bucket to hold website content
