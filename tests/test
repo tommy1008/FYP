@@ -1,0 +1,21 @@
+
+import json
+a=[]
+data= open('Events.json', 'rb')
+b=[]
+for line in data.readlines():
+    dic = json.loads(line)
+    del(dic['time'],dic['ip'],dic['student'])
+
+    
+    if ((dic["name"] == "KeyPressEvent") or (dic["name"] == "KeyReleaseEvent")):
+        a.append(dic)
+
+
+
+        print(a)
+
+        break
+
+    else:
+        b.append(dic)
